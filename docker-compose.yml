@@ -1,9 +1,15 @@
+# Docker for Solving Pack
+# Creator: Md. Moshiur Rahman (Moshiur)
+# Created Date: 12_02_2025
+# Purpose: Easy deployment and setup
+# Version: 1.0.1 (Tested by Ubuntu 22.4)
+
 version: "3.8"
 
 services:
-    # The Solutions Application
-    solutions_server:
-        container_name: solutions_server_container
+    # The Solving Pack Docker Server
+    solving_pack_server:
+        container_name: solving_pack_server_container
         build:
             context: .
             dockerfile: dockerfile
@@ -14,33 +20,32 @@ services:
             - ./:/app
             - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php.ini
         environment:
-            - DB_HOST=solutions_db
-        # command: php -S 0.0.0.0:8001
+            - DB_HOST=solving_pack_db
         command: php -S 0.0.0.0:8001 -t /app/codes
 
     # The Database
-    solutions_db:
-        container_name: solutions_db
+    solving_pack_db:
+        container_name: solving_pack_db
         image: mysql:8.0
         restart: always
         environment:
-            - MYSQL_DATABASE=solutions_db
+            - MYSQL_DATABASE=solving_pack_db
             - MYSQL_ROOT_PASSWORD=password
         command: --default-authentication-plugin=mysql_native_password
         ports:
             - 8002:3306
 
     # PHPMyAdmin
-    solutions_phpmyadmin:
-        container_name: solutions_phpmyadmin
+    solving_pack_phpmyadmin:
+        container_name: solving_pack_phpmyadmin
         image: phpmyadmin/phpmyadmin
         restart: always
         environment:
-            - PMA_HOST=solutions_db
+            - PMA_HOST=solving_pack_db
             - PMA_PORT=3306
             - PMA_USER=root
             - PMA_PASSWORD=password
         ports:
             - 8003:80
         depends_on:
-            - solutions_db
+            - solving_pack_db
