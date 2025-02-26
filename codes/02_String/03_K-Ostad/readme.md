@@ -40,24 +40,32 @@ function levenshteinDistance($str1, $str2) {
     return $dp[$m][$n];
 }
 
-function canSwap($str1, $str2, $k) {
-    $arr1 = str_split($str1);
-    $arr2 = str_split($str2);
-    sort($arr1);
-    sort($arr2);
+function countMismatchedPositions($str1, $str2) {
+    $mismatches = 0;
+    $len = min(strlen($str1), strlen($str2));
 
-    return ($arr1 === $arr2 && $k >= 1);
+    for ($i = 0; $i < $len; $i++) {
+        if ($str1[$i] !== $str2[$i]) {
+            $mismatches++;
+        }
+    }
+    return $mismatches;
 }
 
 function isKOstad($str1, $str2, $k) {
+    // Step 1: Check direct edit distance
     $editDistance = levenshteinDistance($str1, $str2);
     
     if ($editDistance <= $k) {
         return "Yes";
     }
 
-    if (canSwap($str1, $str2, $k)) {
-        return "Yes";
+    // Step 2: Check if swap operations can make them equal
+    if (strlen($str1) === strlen($str2)) {
+        $mismatchCount = countMismatchedPositions($str1, $str2);
+        if ($mismatchCount / 2 <= $k) {
+            return "Yes";
+        }
     }
 
     return "No";

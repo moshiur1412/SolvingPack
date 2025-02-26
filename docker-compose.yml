@@ -27,7 +27,7 @@ services:
     solving_pack_db:
         container_name: solving_pack_db
         image: mysql:8.0
-        restart: always
+        # restart: always
         environment:
             - MYSQL_DATABASE=solving_pack_db
             - MYSQL_ROOT_PASSWORD=password
@@ -39,7 +39,7 @@ services:
     solving_pack_phpmyadmin:
         container_name: solving_pack_phpmyadmin
         image: phpmyadmin/phpmyadmin
-        restart: always
+        # restart: always
         environment:
             - PMA_HOST=solving_pack_db
             - PMA_PORT=3306
